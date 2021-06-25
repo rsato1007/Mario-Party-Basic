@@ -1,0 +1,93 @@
+body {
+    background-color: #21D4FC;
+}
+
+header {
+    margin-top: 2em;
+    width: 66%;
+    background-color: white;
+    margin: 2em auto 0 auto;
+    padding: 1em;
+}
+
+#website-title {
+    text-align: center;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+}
+
+#start {
+    height: 80px;
+    width: 200px;
+    background-color: #F6E4AD;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 70px;
+    font-size: 2em;
+    float: right;
+    margin-top: 1em;
+    margin-right: .5em;
+    z-index: 0;
+    position: relative;
+}
+
+#game-message {
+    width: 500px;
+    height: 100px;
+    background-color: #C19A6B;
+    font-size: 2em;
+    text-align: center;
+    margin: 1em auto;
+}
+
+#player-info {
+    text-align: center;
+    margin-top: 2em;
+}
+
+
+#player-1 {
+    font-size: 2em;
+    display: inline-block;
+    padding: 1em 2em;
+    background-color: #FFA500;
+    justify-content: left;
+    margin-right: 1em;
+}
+
+#player-2 {
+    font-size: 2em;
+    display: inline-block;
+    padding: 1em 2em;
+    background-color: #FFDF00;
+    justify-content: left;
+    margin-right: 1em;
+}
+
+.gameboard {
+    margin-top: 2em;
+    display: grid;
+    grid-template-columns: repeat(7, 65px);
+    column-gap: 9px;
+    row-gap: 9px;
+    /* justify-content: center; */
+}
+
+.blue-space {
+    background-color: blue;
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+}
+
+/* #square1::after {
+    display: inline-block;
+    height: 30px;
+    width: 15px;
+    background-color: #FFA500;
+    content: "";
+} */
