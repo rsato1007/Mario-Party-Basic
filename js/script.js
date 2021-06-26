@@ -1,4 +1,5 @@
 let startEl = document.querySelector("#start");
+let startGameEl = document.getElementById("game-start"); 
 let gameMessage = document.getElementById(`game-message`);
 let diceBlockEl = document.querySelectorAll('.player-dice-turn');
 let currentSpaceEl;
@@ -11,13 +12,13 @@ const player1 = {
     points: 0,
     position: 0,
     charModel: document.createElement('span'),
-    // currentSpaceEl: "",
     char() {
         this.charModel.style.height = "40px";
         this.charModel.style.width = "20px";
         this.charModel.style.display = "inline-block";
         this.charModel.style.backgroundColor = "#FFA500";
         this.charModel.textContent = '';
+        this.charModel.classList.add = "pEl";
     },
 }
 
@@ -26,7 +27,6 @@ const player2 = {
     points: 0,
     position: 0,
     charModel: document.createElement('span'),
-    // currentSpaceEl: "",
     // creates character on board
     char() {
         this.charModel.style.height = "40px";
@@ -34,6 +34,7 @@ const player2 = {
         this.charModel.style.display = "inline-block";
         this.charModel.style.backgroundColor = "#FFDF00";
         this.charModel.textContent = '';
+        this.charModel.classList.add = "pEl";
     },
     playerTurn() {
 
@@ -136,16 +137,25 @@ function playerOrder() {
     gameStart(player1);
     setTimeout(function() {
         gameStart(player2);
-    }, 10000);
+    }, 8000);
     // Gives player ability to roll dice again
     setTimeout(function() {
         diceBlockEl.forEach(object => {
             object.classList.add('player-dice-turn');
         });
+        startGameEl.classList.add('start');
         gameMessage.textContent = `It's your turn to roll the dice`;
     }, 16000);
 }
 
+function resetGame() {
+    player1.points = 0;
+    player2.points = 0;
+    player1.position = 0;
+    player2.position = 0;
+    player1.charModel.remove();
+    player2.charModel.remove();
+}
 // Event listeners
 document.querySelector("body").addEventListener("click", function(e) {
     e.preventDefault();
@@ -157,9 +167,10 @@ document.querySelector("body").addEventListener("click", function(e) {
         diceBlockEl.forEach(object => {
             object.classList.remove('player-dice-turn');
         });
+        startGameEl.classList.remove('start');
     }
     if (e.target.classList.contains('start')) {
         gameMessage.textContent = `Starting new game! Click the dice to start`;
+        resetGame();
     }
 });
-// Down the road, we can incorporate the ability to determine who goes first!
