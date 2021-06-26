@@ -1,34 +1,26 @@
-// The code below appends to an element
-
-// let node = document.createElement('span');
-// node.style.height = "50px";
-// node.style.width = "25px";
-// node.style.display = "inline-block";
-// node.style.backgroundColor = "#FFA500";
-// node.textContent = '';
 let startEl = document.querySelector("#start");
-
-// let node2 = document.createElement('span');
-// node2.style.height = "50px";
-// node2.style.width = "25px";
-// node2.style.display = "inline-block";
-// node2.style.backgroundColor = "#FFA500";
-// node2.textContent = '';
-// // let startEl = document.querySelector("#start");
-// startEl.append(node2);
-
-// Pseudo code
+let gameMessage = document.getElementById(`game-message`);
 let diceNum;
 let movesNum;
 
 // Player objects
 const player1 = {
+    number: 1,
     points: 0,
     position: 0,
+    charModel: document.createElement('span'),
+    currentSpaceEl: "",
+    char() {
+        this.charModel.style.height = "40px";
+        this.charModel.style.width = "20px";
+        this.charModel.style.display = "inline-block";
+        this.charModel.style.backgroundColor = "#FFA500";
+        this.charModel.textContent = '';
+    },
 }
 
 const player2 = {
-    path: 0,
+    number: 2,
     points: 0,
     position: 0,
     charModel: document.createElement('span'),
@@ -38,57 +30,12 @@ const player2 = {
         this.charModel.style.height = "40px";
         this.charModel.style.width = "20px";
         this.charModel.style.display = "inline-block";
-        this.charModel.style.backgroundColor = "#FFA500";
+        this.charModel.style.backgroundColor = "#FFDF00";
         this.charModel.textContent = '';
     },
     playerTurn() {
 
     },
-    movePlayer() {
-        for (i = 0; i < diceNum; i++) {
-            if (player2.position === 0) {
-                player2.position += 1;
-                console.log(`You moved 1 space and are at position: ${this.position}`);
-            }
-            else if (player2.position === 49) {
-                player2.position -= 1;
-                console.log(`You moved 1 space and are at position: ${this.position}`);
-            }
-            else if (player2.position === 43) {
-                player2.position -= 7;
-                console.log(`You moved 1 space and are at position: ${this.position}`);
-            }
-            else if (player2.position === 44 || player2.position === 45 || player2.position === 46 || player2.position === 47 || player2.position === 48) {
-                player2.position -= 1;
-                console.log(`You moved 1 space and are at position: ${this.position}`);
-            }
-            else if (player2.position % 7 === 0) {
-                player2.position += 7;
-                console.log(`You moved 1 space and are at position: ${this.position}`);
-            } 
-            else if ((player2.position % 7 === 1) && (player2.position === 1)) {
-                player2.position += 1;
-                console.log(`You moved 1 space and are at position: ${this.position}`);
-            }
-            else if (player2.position % 7 === 1) {
-                player2.position -= 7;
-                console.log(`You moved 1 space and are at position: ${this.position}`);
-            } 
-            else {
-                player2.position += 1;
-                console.log(`You moved 1 space and are at position: ${this.position}`);
-            }
-        }
-        player2.char();
-        currentSpaceEl = document.getElementById(`square${this.position}`);
-        currentSpaceEl.append(this.charModel);
-        this.updatePoints();
-    },
-    updatePoints() {
-        if (currentSpaceEl.classList.contains('blue-space')) {
-            player2.points += 3;
-        }
-    }
 }
 
 // Dice Roll function
@@ -97,11 +44,99 @@ function rollDice() {
     console.log(`You rolled a ${diceNum}`);
 }
 
-// testing ground
-rollDice();
-player2.movePlayer();
-
-for (let i = 0; i < 6; i++) {
-    rollDice();
-    player2.movePlayer(); 
+// Function that moves player around on board
+function movePlayer(playerNum) {
+    for (i = 0; i < diceNum; i++) {
+        if (playerNum.position === 0) {
+            playerNum.position += 1;
+            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
+        }
+        // else if (playerNum.position === 4) {
+        //     playerNum.char();
+        //     currentSpaceEl = document.getElementById(`square${playerNum.position}`);
+        //     currentSpaceEl.append(playerNum.charModel);
+        //     let option = window.prompt('right or down?');
+        //     if (option === "right") {
+        //         playerNum.position = 5;
+        //     }
+        //     else {
+        //         playerNum.position = 11;
+        //     }
+        // }
+        else if (player2.position === 49) {
+            playerNum.position -= 1;
+            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
+        }
+        else if (playerNum.position === 43) {
+            playerNum.position -= 7;
+            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
+        }
+        else if (playerNum.position === 44 || playerNum.position === 45 || playerNum.position === 46 || playerNum.position === 47 || playerNum.position === 48) {
+            playerNum.position -= 1;
+            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
+        }
+        else if (playerNum.position % 7 === 0) {
+            playerNum.position += 7;
+            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
+        } 
+        else if ((playerNum.position % 7 === 1) && (playerNum.position === 1)) {
+            playerNum.position += 1;
+            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
+        }
+        else if (playerNum.position % 7 === 1) {
+            playerNum.position -= 7;
+            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
+        } 
+        else {
+            playerNum.position += 1;
+            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
+        }
+        playerNum.char();
+        currentSpaceEl = document.getElementById(`square${playerNum.position}`);
+        currentSpaceEl.append(playerNum.charModel);
+    }
+    updatePoints(playerNum);
 }
+
+// function that updates points
+function updatePoints(playerNum) {
+    if (currentSpaceEl.classList.contains('blue-space')) {
+        playerNum.points += 3;
+        gameMessage.textContent = `Player ${playerNum.number} got 3 points!`;
+    }
+    else if (currentSpaceEl.classList.contains('red-space')) {
+        playerNum.points -= 3;
+        if (playerNum.points < 0) {
+            playerNum.points = 0;
+        }
+        gameMessage.textContent = `Player ${playerNum.number} lost 3 points!`;
+    }
+    let pointsEl = document.querySelector(`#player-${playerNum.number}`);
+    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
+}
+
+// Game start function
+function gameStart(playerNum) {
+    gameMessage.textContent = `Player ${playerNum.number} is rolling the dice`;
+    rollDice();
+    // Delay displaying message
+    setTimeout(function() {
+        gameMessage.textContent = `Player ${playerNum.number} rolled a ${diceNum}`;
+        setTimeout(function() {
+            movePlayer(playerNum);
+        }, 2000);
+    }, 3000);
+}
+
+// This is the order in which the players play the game
+function playerOrder() {
+    gameStart(player1);
+    setTimeout(function() {
+        gameStart(player2);
+    }, 10000);
+}
+
+// Down the road, we can incorporate the ability to determine who goes first!
+
+// testing ground
+playerOrder();

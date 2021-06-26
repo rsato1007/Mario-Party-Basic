@@ -34,7 +34,7 @@ header {
     position: relative;
 }
 
-#game-message {
+#game-message-background {
     width: 500px;
     height: 100px;
     background-color: #C19A6B;
@@ -67,6 +67,38 @@ header {
     margin-right: 1em;
 }
 
+#game-start {
+    font-size: 2em;
+    display: inline-block;
+    padding: 1em 2em;
+    background-color: #52307c;
+    justify-content: left;
+    margin-right: 1em;
+    margin-top: 1em;
+    color: white;
+}
+
+#roll-dice {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    justify-content: left;
+    margin-right: 1em;
+    text-align: center;
+}
+
+#dice-num {
+    background-color: black;
+    /* display: inline-block; */
+    margin: 0 auto;
+    width: 25%;
+    height: 25%;
+    border-radius: 50%;
+    position: relative;
+    top: 38%
+}
+
 .gameboard {
     margin-top: 2em;
     display: grid;
@@ -84,10 +116,10 @@ header {
     border-radius: 50%;
 }
 
-/* #square1::after {
+.red-space {
+    background-color: #991A00;
     display: inline-block;
-    height: 30px;
-    width: 15px;
-    background-color: #FFA500;
-    content: "";
-} */
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+}
