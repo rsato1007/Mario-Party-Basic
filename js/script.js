@@ -54,18 +54,15 @@ function movePlayer(playerNum) {
             playerNum.position += 1;
             console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         }
-        // else if (playerNum.position === 4) {
-        //     playerNum.char();
-        //     currentSpaceEl = document.getElementById(`square${playerNum.position}`);
-        //     currentSpaceEl.append(playerNum.charModel);
-        //     let option = window.prompt('right or down?');
-        //     if (option === "right") {
-        //         playerNum.position = 5;
-        //     }
-        //     else {
-        //         playerNum.position = 11;
-        //     }
-        // }
+        else if (playerNum.position === 4) {
+            let option = window.prompt('right or down?');
+            if (option === "right") {
+                playerNum.position = 5;
+            }
+            else {
+                playerNum.position = 11;
+            }
+        }
         else if (playerNum.position === 49) {
             playerNum.position -= 1;
             console.log(`You moved 1 space and are at position: ${playerNum.position}`);
@@ -89,7 +86,10 @@ function movePlayer(playerNum) {
         else if (playerNum.position % 7 === 1) {
             playerNum.position -= 7;
             console.log(`You moved 1 space and are at position: ${playerNum.position}`);
-        } 
+        }
+        else if (playerNum.position % 7 === 4) {
+            playerNum.position += 7;
+        }
         else {
             playerNum.position += 1;
             console.log(`You moved 1 space and are at position: ${playerNum.position}`);
