@@ -1,5 +1,7 @@
 let startEl = document.querySelector("#start");
 let gameMessage = document.getElementById(`game-message`);
+let diceBlockEl = document.querySelectorAll('.player-dice-turn');
+let currentSpaceEl;
 let diceNum;
 let movesNum;
 
@@ -9,7 +11,7 @@ const player1 = {
     points: 0,
     position: 0,
     charModel: document.createElement('span'),
-    currentSpaceEl: "",
+    // currentSpaceEl: "",
     char() {
         this.charModel.style.height = "40px";
         this.charModel.style.width = "20px";
@@ -24,7 +26,7 @@ const player2 = {
     points: 0,
     position: 0,
     charModel: document.createElement('span'),
-    currentSpaceEl: "",
+    // currentSpaceEl: "",
     // creates character on board
     char() {
         this.charModel.style.height = "40px";
@@ -63,7 +65,7 @@ function movePlayer(playerNum) {
         //         playerNum.position = 11;
         //     }
         // }
-        else if (player2.position === 49) {
+        else if (playerNum.position === 49) {
             playerNum.position -= 1;
             console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         }
@@ -95,7 +97,6 @@ function movePlayer(playerNum) {
         currentSpaceEl = document.getElementById(`square${playerNum.position}`);
         currentSpaceEl.append(playerNum.charModel);
     }
-    updatePoints(playerNum);
 }
 
 // function that updates points
@@ -124,19 +125,41 @@ function gameStart(playerNum) {
         gameMessage.textContent = `Player ${playerNum.number} rolled a ${diceNum}`;
         setTimeout(function() {
             movePlayer(playerNum);
+            updatePoints(playerNum);
         }, 2000);
     }, 3000);
 }
 
 // This is the order in which the players play the game
 function playerOrder() {
+    // game start runs for 5 seconds!
     gameStart(player1);
     setTimeout(function() {
         gameStart(player2);
     }, 10000);
+    // Gives player ability to roll dice again
+    setTimeout(function() {
+        diceBlockEl.forEach(object => {
+            object.classList.add('player-dice-turn');
+        });
+        gameMessage.textContent = `It's your turn to roll the dice`;
+    }, 16000);
 }
 
-// Down the road, we can incorporate the ability to determine who goes first!
+// Event listeners
+document.querySelector("body").addEventListener("click", function(e) {
+    e.preventDefault();
 
-// testing ground
-playerOrder();
+    // Selecting dice
+    if (e.target.classList.contains('player-dice-turn')) {
+        // preventing player from abusing dice functionality
+        playerOrder();
+        diceBlockEl.forEach(object => {
+            object.classList.remove('player-dice-turn');
+        });
+    }
+    if (e.target.classList.contains('start')) {
+        gameMessage.textContent = `Starting new game! Click the dice to start`;
+    }
+});
+// Down the road, we can incorporate the ability to determine who goes first!
