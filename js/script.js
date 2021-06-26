@@ -144,8 +144,8 @@ function playerOrder() {
             object.classList.add('player-dice-turn');
         });
         startGameEl.classList.add('start');
-        gameMessage.textContent = `It's your turn to roll the dice`;
-    }, 16000);
+        gameState();
+    }, 14000);
 }
 
 function resetGame() {
@@ -155,6 +155,19 @@ function resetGame() {
     player2.position = 0;
     player1.charModel.remove();
     player2.charModel.remove();
+}
+
+function gameState() {
+    if (player1.points >= 10) {
+        gameMessage.textContent ="You Win!";
+        resetGame();
+    }
+    else if (player2.points >= 10) {
+        gameMessage.textContent ="You Lose!";
+        resetGame();
+    } else {
+        gameMessage.textContent = `It's your turn to roll the dice`;
+    }
 }
 // Event listeners
 document.querySelector("body").addEventListener("click", function(e) {
