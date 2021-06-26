@@ -1,3 +1,4 @@
+let welcomeScreen = document.createElement("div")
 let startEl = document.querySelector("#start");
 let startGameEl = document.getElementById("game-start"); 
 let gameMessage = document.getElementById(`game-message`);
@@ -5,6 +6,10 @@ let diceBlockEl = document.querySelectorAll('.player-dice-turn');
 let currentSpaceEl;
 let diceNum;
 let movesNum;
+
+// Creating splash screen:
+let welcomeEl = document.querySelector("#welcome");
+let backgroundEl = document.querySelector(".hidden-background");
 
 // Player objects
 const player1 = {
@@ -50,46 +55,42 @@ function rollDice() {
 // Function that moves player around on board
 function movePlayer(playerNum) {
     for (i = 0; i < diceNum; i++) {
-        if (playerNum.position === 0) {
+        if (playerNum.position === 0 || (playerNum.position % 7 === 1) && (playerNum.position === 1)) {
             playerNum.position += 1;
             console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         }
         else if (playerNum.position === 4) {
-            let option = window.prompt('right or down?');
-            if (option === "right") {
-                playerNum.position = 5;
+            if (playerNum.number === 2) {
+                let pathChoice = Math.floor(Math.random() * (2 - 1 + 1) + 1);
+                if (pathChoice === 1) {
+                    playerNum.position = 5;
+                }
+                else {
+                    playerNum.position = 11;
+                }
             }
             else {
-                playerNum.position = 11;
+                let option = window.prompt('right or down?');
+                if (option === "right" || option === "Right" || option === "r" || option === "R") {
+                    playerNum.position = 5;
+                }
+                else {
+                    playerNum.position = 11;
+                }
             }
         }
-        else if (playerNum.position === 49) {
+        else if (playerNum.position === 44 || playerNum.position === 45 || playerNum.position === 46 || playerNum.position === 47 || playerNum.position === 48 || playerNum.position === 49) {
             playerNum.position -= 1;
             console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         }
-        else if (playerNum.position === 43) {
+        else if (playerNum.position === 43 || playerNum.position % 7 === 1) {
             playerNum.position -= 7;
             console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         }
-        else if (playerNum.position === 44 || playerNum.position === 45 || playerNum.position === 46 || playerNum.position === 47 || playerNum.position === 48) {
-            playerNum.position -= 1;
-            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
-        }
-        else if (playerNum.position % 7 === 0) {
+        else if (playerNum.position % 7 === 0 || playerNum.position % 7 === 4) {
             playerNum.position += 7;
             console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         } 
-        else if ((playerNum.position % 7 === 1) && (playerNum.position === 1)) {
-            playerNum.position += 1;
-            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
-        }
-        else if (playerNum.position % 7 === 1) {
-            playerNum.position -= 7;
-            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
-        }
-        else if (playerNum.position % 7 === 4) {
-            playerNum.position += 7;
-        }
         else {
             playerNum.position += 1;
             console.log(`You moved 1 space and are at position: ${playerNum.position}`);
@@ -185,5 +186,12 @@ document.querySelector("body").addEventListener("click", function(e) {
     if (e.target.classList.contains('start')) {
         gameMessage.textContent = `Starting new game! Click the dice to start`;
         resetGame();
+    }
+
+    // Closing welcome screen
+    if (e.target.classList.contains('welcome-button')) {
+        welcomeEl.classList.remove("welcome-page");
+        welcomeEl.textContent = '';
+        backgroundEl.classList.remove("hidden-background");
     }
 });
