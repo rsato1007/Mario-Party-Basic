@@ -11,6 +11,9 @@ let movesNum;
 let welcomeEl = document.querySelector("#welcome");
 let backgroundEl = document.querySelector(".hidden-background");
 
+// Incorporating responsive design:
+const maxWidth1000 = window.matchMedia("(max-width: 1000px");
+
 // Player objects
 const player1 = {
     number: 1,
@@ -18,12 +21,22 @@ const player1 = {
     position: 0,
     charModel: document.createElement('span'),
     char() {
-        this.charModel.style.height = "40px";
-        this.charModel.style.width = "20px";
-        this.charModel.style.display = "inline-block";
-        this.charModel.style.backgroundColor = "#FFA500";
-        this.charModel.textContent = '';
-        this.charModel.classList.add = "pEl";
+        if (maxWidth1000.matches) {
+            this.charModel.style.height = "28px";
+            this.charModel.style.width = "14px";
+            this.charModel.style.display = "inline-block";
+            this.charModel.style.backgroundColor = "#FFA500";
+            this.charModel.textContent = '';
+            this.charModel.classList.add = "pEl";
+        }
+        else {
+            this.charModel.style.height = "40px";
+            this.charModel.style.width = "20px";
+            this.charModel.style.display = "inline-block";
+            this.charModel.style.backgroundColor = "#FFA500";
+            this.charModel.textContent = '';
+            this.charModel.classList.add = "pEl";
+        }
     },
 }
 
@@ -34,12 +47,22 @@ const player2 = {
     charModel: document.createElement('span'),
     // creates character on board
     char() {
-        this.charModel.style.height = "40px";
-        this.charModel.style.width = "20px";
-        this.charModel.style.display = "inline-block";
-        this.charModel.style.backgroundColor = "#FFDF00";
-        this.charModel.textContent = '';
-        this.charModel.classList.add = "pEl";
+        if (maxWidth1000.matches) {
+            this.charModel.style.height = "28px";
+            this.charModel.style.width = "14px";
+            this.charModel.style.display = "inline-block";
+            this.charModel.style.backgroundColor = "#FFDF00";
+            this.charModel.textContent = '';
+            this.charModel.classList.add = "pEl";
+        }
+        else {
+            this.charModel.style.height = "40px";
+            this.charModel.style.width = "20px";
+            this.charModel.style.display = "inline-block";
+            this.charModel.style.backgroundColor = "#FFDF00";
+            this.charModel.textContent = '';
+            this.charModel.classList.add = "pEl";
+        }
     },
     playerTurn() {
 

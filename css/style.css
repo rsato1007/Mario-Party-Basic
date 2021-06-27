@@ -1,15 +1,27 @@
 body {
-    background-color: #21D4FC;
+    /* background-color: #21D4FC; */
+    background: linear-gradient(90deg, rgba(0,228,255,1) 0%, 
+        rgba(0,211,255,1) 10%, 
+        rgb(0, 190, 211) 20%,
+        rgba(0,211,255,1) 30%, 
+        rgba(0, 190, 211) 40%, 
+        rgba(0,211,255,1) 50%, 
+        rgba(0, 190, 211) 60%, 
+        rgba(0,211,255,1) 70%, 
+        rgba(0, 190, 211) 80%, 
+        rgba(0,211,255,1) 90%, 
+        rgba(0, 190, 211) 100%);
     position: relative;
     margin: 0;
 }
 
 header {
-    margin-top: 2em;
     width: 66%;
-    background-color: white;
-    margin: 2em auto 0 auto;
+    background-color: #F9A602;
+    margin: 1em auto 0 auto;
     padding: 1em;
+    border-radius: 6%;
+    border: 2px solid black;
 }
 
 #website-title {
@@ -34,26 +46,33 @@ header {
     margin-right: .5em;
     z-index: 0;
     position: relative;
+    border: 1px solid black;
 }
 
 #game-message-background {
     width: 500px;
     height: 150px;
-    background-color: #C19A6B;
+    background: linear-gradient(#9b6f39 0%, #c19a6b 20%, #9b6f39 40%, #c19a6b 60%, #9b6f39 80%, #c19a6b 100%);
     font-size: 2em;
     text-align: center;
     margin: 1em auto;
+    border-radius: 4%;
+    border: 2px solid black;
+}
+
+#game-message-header {
+    padding-top: .25em;
 }
 
 #game-message {
     font-size: .85em;
+    padding: .5em;
 }
 
 #player-info {
     text-align: center;
     margin-top: 2em;
 }
-
 
 #player-1 {
     font-size: 2em;
@@ -62,6 +81,7 @@ header {
     background-color: #FFA500;
     justify-content: left;
     margin-right: 1em;
+    border-radius: 8%;
 }
 
 #player-2 {
@@ -71,6 +91,8 @@ header {
     background-color: #FFDF00;
     justify-content: left;
     margin-right: 1em;
+    border-radius: 8%;
+    margin-top: 0.5em;
 }
 
 #game-start {
@@ -82,9 +104,14 @@ header {
     margin-right: 1em;
     margin-top: 1em;
     color: white;
+    border: 2px solid black;
 }
 
-#roll-dice {
+#game-start:hover {
+    background-color: #492772;
+}
+
+.dice {
     display: inline-block;
     width: 60px;
     height: 60px;
@@ -92,6 +119,12 @@ header {
     justify-content: left;
     margin-right: 1em;
     text-align: center;
+    border: 1px solid black;
+    margin-top: 0.5em;
+}
+
+.dice:hover {
+    border: 2px solid black;
 }
 
 #dice-num {
@@ -111,7 +144,6 @@ header {
     grid-template-columns: repeat(7, 65px);
     column-gap: 9px;
     row-gap: 9px;
-    /* justify-content: center; */
 }
 
 .blue-space {
@@ -120,6 +152,7 @@ header {
     width: 65px;
     height: 65px;
     border-radius: 50%;
+    border: 2px solid rgb(84, 84, 255);
 }
 
 .red-space {
@@ -128,6 +161,7 @@ header {
     width: 65px;
     height: 65px;
     border-radius: 50%;
+    border: 2px solid #ad3219;
 }
 
 .welcome-page {
@@ -165,6 +199,69 @@ header {
 
 #ok-button:hover {
     background-color: gray;
+}
+
+@media only screen and (max-width: 1000px) {
+    #website-title {
+        font-size: 1.5em;
+    }
+    
+    #start {
+        height: 60px;
+        width: 150px;
+        line-height: 52.5px;
+        font-size: 1.5em;
+    }
+    
+    .wrapper {
+        display: grid;
+        grid-template-columns: .5fr 1.5fr;
+        grid-template-rows: 1fr 0.5fr;
+    }
+
+    #player-info {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+
+    .gameboard {
+        grid-template-columns: repeat(7, 45px);
+        column-gap: 7px;
+        row-gap: 7px;
+    }
+
+    .blue-space {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .red-space {
+        width: 45px;
+        height: 45px;
+    }
+    #player-1 {
+        font-size: 1.5em;
+    }
+    
+    #player-2 {
+        font-size: 1.5em;
+    }
+
+    #game-start {
+        font-size: 1.5em;
+        border: 1.5px solid black;
+    }
+
+    #game-message-background {
+        width: 375px;
+        height: 112.5px;
+        background: linear-gradient(#9b6f39 0%, #c19a6b 20%, #9b6f39 40%, #c19a6b 60%, #9b6f39 80%, #c19a6b 100%);
+        font-size: 1.5em;
+        text-align: center;
+        margin: 1em auto;
+        border-radius: 4%;
+        border: 1.8px solid black;
+    }
 }
 /* 
 .star-space {
