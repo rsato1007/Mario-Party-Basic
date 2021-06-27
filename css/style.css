@@ -144,6 +144,7 @@ header {
     grid-template-columns: repeat(7, 65px);
     column-gap: 9px;
     row-gap: 9px;
+    text-align: center;
 }
 
 .blue-space {
@@ -162,6 +163,18 @@ header {
     height: 65px;
     border-radius: 50%;
     border: 2px solid #ad3219;
+}
+
+.green-space {
+    background-color: #006400;
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: 2px solid #0d830d;
+    /* line-height: 65px;
+    font-size: 2.5em; */
+    color: white;
 }
 
 .welcome-page {
@@ -239,6 +252,14 @@ header {
         width: 45px;
         height: 45px;
     }
+
+    .green-space {
+        width: 45px;
+        height: 45px;
+        line-height: 45px;
+        font-size: 2em;
+    }
+
     #player-1 {
         font-size: 1.5em;
     }

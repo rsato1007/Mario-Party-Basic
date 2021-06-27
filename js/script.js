@@ -72,7 +72,6 @@ const player2 = {
 // Dice Roll function
 function rollDice() {
     diceNum = Math.floor(Math.random() * (7 - 1) + 1);
-    console.log(`You rolled a ${diceNum}`);
 }
 
 // Function that moves player around on board
@@ -80,7 +79,6 @@ function movePlayer(playerNum) {
     for (i = 0; i < diceNum; i++) {
         if (playerNum.position === 0 || (playerNum.position % 7 === 1) && (playerNum.position === 1)) {
             playerNum.position += 1;
-            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         }
         else if (playerNum.position === 4) {
             if (playerNum.number === 2) {
@@ -104,19 +102,15 @@ function movePlayer(playerNum) {
         }
         else if (playerNum.position === 44 || playerNum.position === 45 || playerNum.position === 46 || playerNum.position === 47 || playerNum.position === 48 || playerNum.position === 49) {
             playerNum.position -= 1;
-            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         }
         else if (playerNum.position === 43 || playerNum.position % 7 === 1) {
             playerNum.position -= 7;
-            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         }
         else if (playerNum.position % 7 === 0 || playerNum.position % 7 === 4) {
             playerNum.position += 7;
-            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         } 
         else {
             playerNum.position += 1;
-            console.log(`You moved 1 space and are at position: ${playerNum.position}`);
         }
         playerNum.char();
         currentSpaceEl = document.getElementById(`square${playerNum.position}`);
@@ -125,7 +119,7 @@ function movePlayer(playerNum) {
 }
 
 // function that updates points
-function updatePoints(playerNum) {
+async function updatePoints(playerNum) {
     if (currentSpaceEl.classList.contains('blue-space')) {
         playerNum.points += 3;
         gameMessage.textContent = `Player ${playerNum.number} got 3 points!`;
@@ -137,12 +131,49 @@ function updatePoints(playerNum) {
         }
         gameMessage.textContent = `Player ${playerNum.number} lost 3 points!`;
     }
+    else if (currentSpaceEl.classList.contains('green-space')) {
+        const eventChoiceNum = Math.floor(Math.random() * (100 - 1 + 1) + 1);
+        // Extra roll
+        // if (eventChoiceNum > 70 && eventChoiceNum <= 85) {
+        //     gameMessage.textContent = `Player ${playerNum.number} gets an extra dice roll!`;
+        //     gameStart(playerNum);
+        // }
+        if (eventChoiceNum <= 100) {
+            gameMessage.textContent = `Player ${playerNum.number} gets an extra dice roll!`;
+            await setTimeout(function() {
+                gameStart(playerNum);
+            }, 2000)
+        }
+        // // 10 Coins
+        // else if(eventChoiceNum >= 1 && eventChoiceNum <= 35) {
+        //     playerNum.points += 10;
+        //     gameMessage.textContent = `Player ${playerNum.number} gets 10 points!`;
+        // }
+        // // Minus 10 Coins
+        // else if(eventChoiceNum > 35 && eventChoiceNum <= 70) {
+        //     playerNum.points -= 10;
+        //     if (playerNum.points < 0) {
+        //         playerNum.points = 0;
+        //     }
+        //     gameMessage.textContent = `Player ${playerNum.number} loses 10 points!`;
+        // }
+        // Swap places
+        else if(eventChoiceNum > 85) {
+            const p1Position = player1.position;
+            const p2Position = player2.position;
+            player1.position = p2Position;
+            player2.position = p1Position;
+            diceNum = 0;
+            gameMessage.textContent = `The players are swapping places!`;
+            movePlayer(playerNum);
+        }
+    }
     let pointsEl = document.querySelector(`#player-${playerNum.number}`);
     pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
 }
 
 // Game start function
-function gameStart(playerNum) {
+async function gameStart(playerNum) {
     gameMessage.textContent = `Player ${playerNum.number} is rolling the dice`;
     rollDice();
     // Delay displaying message
@@ -151,8 +182,8 @@ function gameStart(playerNum) {
         setTimeout(function() {
             movePlayer(playerNum);
             updatePoints(playerNum);
-        }, 2000);
-    }, 3000);
+        }, 3000);
+    }, 4000);
 }
 
 // This is the order in which the players play the game
@@ -161,7 +192,7 @@ function playerOrder() {
     gameStart(player1);
     setTimeout(function() {
         gameStart(player2);
-    }, 8000);
+    }, 10000);
     // Gives player ability to roll dice again
     setTimeout(function() {
         diceBlockEl.forEach(object => {
@@ -169,7 +200,7 @@ function playerOrder() {
         });
         startGameEl.classList.add('start');
         gameState();
-    }, 14000);
+    }, 16000);
 }
 
 function resetGame() {
@@ -182,15 +213,17 @@ function resetGame() {
 }
 
 function gameState() {
-    if (player1.points >= 10) {
+    if (player1.points >= 20) {
         gameMessage.textContent ="You Win!";
         resetGame();
     }
-    else if (player2.points >= 10) {
+    else if (player2.points >= 20) {
         gameMessage.textContent ="You Lose!";
         resetGame();
     } else {
-        gameMessage.textContent = `It's your turn to roll the dice`;
+        setTimeout(function() {
+            gameMessage.textContent = `It's your turn to roll the dice`;
+        }, 2000)
     }
 }
 // Event listeners
@@ -206,8 +239,11 @@ document.querySelector("body").addEventListener("click", function(e) {
         });
         startGameEl.classList.remove('start');
     }
+
+    // When user selects start a game/reset game
     if (e.target.classList.contains('start')) {
         gameMessage.textContent = `Starting new game! Click the dice to start`;
+        startGameEl.textContent = `Reset Game`;
         resetGame();
     }
 
