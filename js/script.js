@@ -75,51 +75,61 @@ function rollDice() {
 }
 
 // Function that moves player around on board
-function movePlayer(playerNum) {
-    for (i = 0; i < diceNum; i++) {
-        if (playerNum.position === 0 || (playerNum.position % 7 === 1) && (playerNum.position === 1)) {
-            playerNum.position += 1;
-        }
-        else if (playerNum.position === 4) {
-            if (playerNum.number === 2) {
-                let pathChoice = Math.floor(Math.random() * (2 - 1 + 1) + 1);
-                if (pathChoice === 1) {
-                    playerNum.position = 5;
+function movePlayer(playerNum, swap) {
+    if (swap === true) {
+        player1.char();
+        currentSpaceEl = document.getElementById(`square${player1.position}`);
+        currentSpaceEl.append(player1.charModel);
+        player2.char();
+        currentSpaceEl = document.getElementById(`square${player2.position}`);
+        currentSpaceEl.append(player2.charModel);
+    }
+    else {
+        for (i = 0; i < diceNum; i++) {
+            if (playerNum.position === 0 || (playerNum.position % 7 === 1) && (playerNum.position === 1)) {
+                playerNum.position += 1;
+            }
+            else if (playerNum.position === 4) {
+                if (playerNum.number === 2) {
+                    let pathChoice = Math.floor(Math.random() * (2 - 1 + 1) + 1);
+                    if (pathChoice === 1) {
+                        playerNum.position = 5;
+                    }
+                    else {
+                        playerNum.position = 11;
+                    }
                 }
                 else {
-                    playerNum.position = 11;
+                    let option = window.prompt('right or down?');
+                    if (option === "right" || option === "Right" || option === "r" || option === "R") {
+                        playerNum.position = 5;
+                    }
+                    else {
+                        playerNum.position = 11;
+                    }
                 }
             }
+            else if (playerNum.position === 44 || playerNum.position === 45 || playerNum.position === 46 || playerNum.position === 47 || playerNum.position === 48 || playerNum.position === 49) {
+                playerNum.position -= 1;
+            }
+            else if (playerNum.position === 43 || playerNum.position % 7 === 1) {
+                playerNum.position -= 7;
+            }
+            else if (playerNum.position % 7 === 0 || playerNum.position % 7 === 4) {
+                playerNum.position += 7;
+            } 
             else {
-                let option = window.prompt('right or down?');
-                if (option === "right" || option === "Right" || option === "r" || option === "R") {
-                    playerNum.position = 5;
-                }
-                else {
-                    playerNum.position = 11;
-                }
+                playerNum.position += 1;
             }
+            playerNum.char();
+            currentSpaceEl = document.getElementById(`square${playerNum.position}`);
+            currentSpaceEl.append(playerNum.charModel);
         }
-        else if (playerNum.position === 44 || playerNum.position === 45 || playerNum.position === 46 || playerNum.position === 47 || playerNum.position === 48 || playerNum.position === 49) {
-            playerNum.position -= 1;
-        }
-        else if (playerNum.position === 43 || playerNum.position % 7 === 1) {
-            playerNum.position -= 7;
-        }
-        else if (playerNum.position % 7 === 0 || playerNum.position % 7 === 4) {
-            playerNum.position += 7;
-        } 
-        else {
-            playerNum.position += 1;
-        }
-        playerNum.char();
-        currentSpaceEl = document.getElementById(`square${playerNum.position}`);
-        currentSpaceEl.append(playerNum.charModel);
     }
 }
 
 // function that updates points
-async function updatePoints(playerNum) {
+function updatePoints(playerNum) {
     if (currentSpaceEl.classList.contains('blue-space')) {
         playerNum.points += 3;
         gameMessage.textContent = `Player ${playerNum.number} got 3 points!`;
@@ -132,40 +142,31 @@ async function updatePoints(playerNum) {
         gameMessage.textContent = `Player ${playerNum.number} lost 3 points!`;
     }
     else if (currentSpaceEl.classList.contains('green-space')) {
-        const eventChoiceNum = Math.floor(Math.random() * (100 - 1 + 1) + 1);
-        // Extra roll
-        // if (eventChoiceNum > 70 && eventChoiceNum <= 85) {
-        //     gameMessage.textContent = `Player ${playerNum.number} gets an extra dice roll!`;
-        //     gameStart(playerNum);
-        // }
-        if (eventChoiceNum <= 100) {
-            gameMessage.textContent = `Player ${playerNum.number} gets an extra dice roll!`;
-            await setTimeout(function() {
-                gameStart(playerNum);
-            }, 2000)
+        const eventChoiceNum = Math.floor(Math.random() * (60 - 1 + 1) + 1);
+        // 10 Coins
+        if(eventChoiceNum >= 1 && eventChoiceNum <= 20) {
+            playerNum.points += 10;
+            gameMessage.textContent = `Player ${playerNum.number} gets 10 points!`;
         }
-        // // 10 Coins
-        // else if(eventChoiceNum >= 1 && eventChoiceNum <= 35) {
-        //     playerNum.points += 10;
-        //     gameMessage.textContent = `Player ${playerNum.number} gets 10 points!`;
-        // }
-        // // Minus 10 Coins
-        // else if(eventChoiceNum > 35 && eventChoiceNum <= 70) {
-        //     playerNum.points -= 10;
-        //     if (playerNum.points < 0) {
-        //         playerNum.points = 0;
-        //     }
-        //     gameMessage.textContent = `Player ${playerNum.number} loses 10 points!`;
-        // }
+        // Minus 10 Coins
+        else if(eventChoiceNum > 20 && eventChoiceNum <= 40) {
+            playerNum.points -= 10;
+            if (playerNum.points < 0) {
+                playerNum.points = 0;
+            }
+            gameMessage.textContent = `Player ${playerNum.number} loses 10 points!`;
+        }
         // Swap places
-        else if(eventChoiceNum > 85) {
+        else if(eventChoiceNum > 40) {
             const p1Position = player1.position;
             const p2Position = player2.position;
             player1.position = p2Position;
             player2.position = p1Position;
-            diceNum = 0;
+            diceNum = 1;
             gameMessage.textContent = `The players are swapping places!`;
-            movePlayer(playerNum);
+            setTimeout(function() {
+                movePlayer(playerNum, true);
+            }, 1500)
         }
     }
     let pointsEl = document.querySelector(`#player-${playerNum.number}`);
@@ -173,17 +174,17 @@ async function updatePoints(playerNum) {
 }
 
 // Game start function
-async function gameStart(playerNum) {
+function gameStart(playerNum) {
     gameMessage.textContent = `Player ${playerNum.number} is rolling the dice`;
     rollDice();
     // Delay displaying message
     setTimeout(function() {
         gameMessage.textContent = `Player ${playerNum.number} rolled a ${diceNum}`;
         setTimeout(function() {
-            movePlayer(playerNum);
+            movePlayer(playerNum, false);
             updatePoints(playerNum);
         }, 3000);
-    }, 4000);
+    }, 3000);
 }
 
 // This is the order in which the players play the game
