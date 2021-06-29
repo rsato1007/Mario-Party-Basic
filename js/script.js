@@ -131,30 +131,62 @@ function movePlayer(playerNum, swap) {
 // function that updates points
 function updatePoints(playerNum) {
     if (currentSpaceEl.classList.contains('blue-space')) {
-        playerNum.points += 3;
         gameMessage.textContent = `Player ${playerNum.number} got 3 points!`;
+        time = 1000;
+        for (let i = 1; i < 4; i++) {
+            setTimeout(function() {
+                playerNum.points += 1; 
+                let pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
+            }, time);
+            time += 500;
+        }
     }
     else if (currentSpaceEl.classList.contains('red-space')) {
-        playerNum.points -= 3;
-        if (playerNum.points < 0) {
-            playerNum.points = 0;
-        }
         gameMessage.textContent = `Player ${playerNum.number} lost 3 points!`;
+        time = 1000;
+        for (let i = 1; i < 4; i++) {
+            setTimeout(function() {
+                playerNum.points -= 1; 
+                if (playerNum.points < 0) {
+                    playerNum.points = 0;
+                }
+                let pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
+            }, time);
+            time += 500;
+        }
     }
     else if (currentSpaceEl.classList.contains('green-space')) {
         const eventChoiceNum = Math.floor(Math.random() * (60 - 1 + 1) + 1);
         // 10 Coins
         if(eventChoiceNum >= 1 && eventChoiceNum <= 20) {
-            playerNum.points += 10;
             gameMessage.textContent = `Player ${playerNum.number} gets 10 points!`;
+            time = 1000;
+            for (let i = 1; i < 11; i++) {
+                setTimeout(function() {
+                    playerNum.points += 1; 
+                    let pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
+                }, time);
+                time += 500;
+            }
         }
         // Minus 10 Coins
         else if(eventChoiceNum > 20 && eventChoiceNum <= 40) {
-            playerNum.points -= 10;
-            if (playerNum.points < 0) {
-                playerNum.points = 0;
-            }
             gameMessage.textContent = `Player ${playerNum.number} loses 10 points!`;
+            time = 1000;
+            for (let i = 1; i < 11; i++) {
+                setTimeout(function() {
+                    playerNum.points -= 1; 
+                    if (playerNum.points < 0) {
+                        playerNum.points = 0;
+                    }
+                    let pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
+                }, time);
+                time += 500;
+            }
         }
         // Swap places
         else if(eventChoiceNum > 40) {
@@ -190,10 +222,11 @@ function gameStart(playerNum) {
 // This is the order in which the players play the game
 function playerOrder() {
     // game start runs for 5 seconds!
+    const time = 10000
     gameStart(player1);
     setTimeout(function() {
         gameStart(player2);
-    }, 10000);
+    }, time);
     // Gives player ability to roll dice again
     setTimeout(function() {
         diceBlockEl.forEach(object => {
@@ -201,7 +234,7 @@ function playerOrder() {
         });
         startGameEl.classList.add('start');
         gameState();
-    }, 16000);
+    }, time * 2);
 }
 
 function resetGame() {
