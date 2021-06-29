@@ -221,7 +221,7 @@ function gameStart(playerNum) {
 
 // This is the order in which the players play the game
 function playerOrder() {
-    // game start runs for 5 seconds!
+    // game start runs for 10 seconds!
     const time = 10000
     gameStart(player1);
     setTimeout(function() {
@@ -234,7 +234,7 @@ function playerOrder() {
         });
         startGameEl.classList.add('start');
         gameState();
-    }, time * 2);
+    }, time * 1.8);
 }
 
 function resetGame() {
@@ -244,6 +244,11 @@ function resetGame() {
     player2.position = 0;
     player1.charModel.remove();
     player2.charModel.remove();
+    // Update screen
+    let pointsEl = document.querySelector(`#player-1`);
+    pointsEl.textContent = `Player 1: ${player1.points} points`;
+    pointsEl = document.querySelector(`#player-2`);
+    pointsEl.textContent = `Player 2: ${player2.points} points`;
 }
 
 function gameState() {
