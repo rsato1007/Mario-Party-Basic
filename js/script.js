@@ -74,6 +74,21 @@ const player2 = {
 
     },
 }
+// Window prompt function
+function branchWindowOption(playerNum) {
+    let option = window.prompt('right or down?');
+    if (option === "right" || option === "Right" || option === "r" || option === "R") {
+        playerNum.position = 5;
+    }
+    else if (option === "down" || option === "Down" || option === "d" || option === "D") {
+        playerNum.position = 11;
+    }
+    else {
+        alert("invalid response");
+        branchWindowOption(playerNum);
+    }
+    return;
+}
 
 // Dice Roll function
 function rollDice() {
@@ -110,13 +125,7 @@ function movePlayer(playerNum, swap) {
                     }
                 }
                 else {
-                    let option = window.prompt('right or down?');
-                    if (option === "right" || option === "Right" || option === "r" || option === "R") {
-                        playerNum.position = 5;
-                    }
-                    else {
-                        playerNum.position = 11;
-                    }
+                    branchWindowOption(playerNum);
                 }
             }
             else if (playerNum.position === 44 || playerNum.position === 45 || playerNum.position === 46 || playerNum.position === 47 || playerNum.position === 48 || playerNum.position === 49) {
