@@ -7,27 +7,29 @@ To play this game, you'll start by going to this link: [Mario Party Basic](https
 - Landing on a blue space nets you 3 points.
 - Landing on a red space loses you 3 points.
 - Landing on a green space can either: give/take 10 points or swap places with the computer.
-- Passing/Landing on the yellow space gives you the opportunity to buy a star as long as you have 20 points to spend.
+- Passing/Landing on the yellow space gives you the opportunity to buy a star as long as you have 20 points to spend. When someone buys a star, the star moves to a new space.
 
 Whoever gets 2 stars first wins the game.
 
+## Tester Mode
+---
+If you plan on testing the game/making additions, there is a tester mode that can be accessed. Inside the browser's console, type in `testerMode();`. It takes three arguments `true/false`(this increases your dice number by three), `points` (how many points you start with), and `stars` (how stars you start with).
 ## Planned Features
 ---
 Since the initial inspiration was Mario Party, there are a few ideas planned:
 - Big Game Features:
     - Four player option.
     - ability to allow two human players to play.
-    - Randomizing where the star space would be everytime a star is bought.
     - Minigames, plus code that chooses a minigame randomly after all players have rolled the dice.
 - Minor Features:
     - Arrows appearing that give the user the ability to select which direction they go.
-    - Allowing the user to input a nickname
+    - Allowing the user to input a nickname.
     - Allowing the user to choose a color.
 
-## Known Bugs
+## Known Bug(s)
 ---
 The game features a couple bugs that I am currently working on fixing:
-- Clicking "cancel" on the branch route moves you down.
+- When player 2 gets the star and it's the game winning star, the game resets before the points are added up.
 
 ## About The Author
 ---

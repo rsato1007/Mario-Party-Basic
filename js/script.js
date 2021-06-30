@@ -9,6 +9,7 @@ let diceNum;
 let movesNum;
 let starSpaceEl;
 let starSpacePosition;
+let starSpacePreviousPosition;
 let diceNumIncrease;
 
 // Creating splash screen:
@@ -94,7 +95,7 @@ function branchWindowOption(playerNum) {
 function rollDice() {
     diceNum = Math.floor(Math.random() * (7 - 1) + 1);
     if (diceNumIncrease === true) {
-        diceNum = diceNum * 2;
+        diceNum += 3;
     }
 }
 
@@ -282,6 +283,8 @@ function resetGame() {
     pointsEl.textContent = `Player 1: ${player1.points} points`;
     pointsEl = document.querySelector(`#player-2`);
     pointsEl.textContent = `Player 2: ${player2.points} points`;
+    // update star space
+    starSpaceGenerate();
 }
 
 function gameState() {
@@ -323,6 +326,7 @@ function playerOnStarSpace(playerNum) {
                     pointsEl = document.querySelector(`#player-${playerNum.number}`);
                     pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
                     ${playerNum.stars} stars`
+                    starSpaceGenerate();
                 }
                 else if(option === "n" || option === "N") {
                     gameMessage.textContent = `Player ${playerNum.number}..... declined a star...`;
@@ -343,6 +347,7 @@ function playerOnStarSpace(playerNum) {
                 pointsEl = document.querySelector(`#player-${playerNum.number}`);
                 pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
                 ${playerNum.stars} stars`;
+                starSpaceGenerate();
             }
             else if(option === "n" || option === "N") {
                 gameMessage.textContent = `Player ${playerNum.number}..... declined a star...`;
@@ -371,6 +376,7 @@ function playerOnStarSpace(playerNum) {
             pointsEl = document.querySelector(`#player-${playerNum.number}`);
             pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
             ${playerNum.stars} stars`
+            starSpaceGenerate();
         }
         else if (playerNum.points < 20) {
             gameMessage.textContent = `Not enough points for a star!`;
@@ -378,17 +384,32 @@ function playerOnStarSpace(playerNum) {
     }
 }
 
-// Generates star space information
+// Generates star space for new game and when a star is bought
 function starSpaceGenerate() {
-    // eventually provide array that randomly chooses between the stars or something like.
-    starSpaceEl = document.getElementById("square8");
-    starSpacePosition = 8;
+    const starSpaceChoices = [8, 14, 18, 22, 25, 35, 36, 42, 43, 45, 46, 47, 49];
+    let chooseSpace = Math.floor(Math.random() * starSpaceChoices.length);
+    // This ensures the we don't end up on the same star space as before.
+    if (chooseSpace === starSpacePreviousPosition) {
+        chooseSpace = Math.floor(Math.random() * starSpaceChoices.length);
+    }
+    // Removing old star space if it exists.
+    if (starSpaceEl !== undefined) {
+        starSpaceEl.classList.remove('star-space');
+        starSpaceEl.classList.add('blue-space');
+    }
+    // Adding star space
+    starSpaceEl = document.getElementById(`square${starSpaceChoices[chooseSpace]}`);
+    starSpaceEl.classList.remove('blue-space');
+    starSpaceEl.classList.add('star-space');
+    starSpacePosition = starSpaceChoices[chooseSpace];
+    starSpacePreviousPosition = starSpaceChoices[chooseSpace];
 }
 
 // Developer mode for testing
-function developerMode(diceNumIncrease = false) {
-    player1.points = 100;
-    diceNumIncrease = true
+function testerMode(diceNumMode = false, points = 0, stars = 0) {
+    player1.points = points;
+    player1.stars = stars;
+    diceNumIncrease = diceNumMode;
 }
 
 // Event listeners
