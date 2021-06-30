@@ -7,8 +7,9 @@ To play this game, you'll start by going to this link: [Mario Party Basic](https
 - Landing on a blue space nets you 3 points.
 - Landing on a red space loses you 3 points.
 - Landing on a green space can either: give/take 10 points or swap places with the computer.
+- Passing/Landing on the yellow space gives you the opportunity to buy a star as long as you have 20 points to spend.
 
-Whoever gets 20 points first wins the game.
+Whoever gets 2 stars first wins the game.
 
 ## Planned Features
 ---
@@ -16,7 +17,7 @@ Since the initial inspiration was Mario Party, there are a few ideas planned:
 - Big Game Features:
     - Four player option.
     - ability to allow two human players to play.
-    - A star space on the board that randomizes it's location everytime and you buy a star by paying 20 coins (points would be converted to coins). The game winning state would change to getting two stars first.
+    - Randomizing where the star space would be everytime a star is bought.
     - Minigames, plus code that chooses a minigame randomly after all players have rolled the dice.
 - Minor Features:
     - Arrows appearing that give the user the ability to select which direction they go.
