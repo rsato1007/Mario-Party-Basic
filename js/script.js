@@ -2,15 +2,24 @@ let welcomeScreen = document.createElement("div")
 let startEl = document.querySelector("#start");
 let startGameEl = document.getElementById("game-start"); 
 let gameMessage = document.getElementById(`game-message`);
-let diceBlockEl = document.querySelectorAll('.player-dice-turn');
 let pointsEl;
 let currentSpaceEl;
-let diceNum;
-let movesNum;
 let starSpaceEl;
 let starSpacePosition;
 let starSpacePreviousPosition;
-let diceNumIncrease;
+
+// Dice Object
+let dice = {
+    blockEl: document.querySelectorAll('.player-dice-turn'),
+    number: null,
+    increaseNum: false,
+    roll: function() {
+        this.number = Math.floor(Math.random() * (7 - 1) + 1);
+        if (this.increaseNum === true) {
+            this.number += 3;
+        };
+    },
+}
 
 // Creating splash screen:
 let welcomeEl = document.querySelector("#welcome");
@@ -91,13 +100,13 @@ function branchWindowOption(playerNum) {
     return;
 }
 
-// Dice Roll function
-function rollDice() {
-    diceNum = Math.floor(Math.random() * (7 - 1) + 1);
-    if (diceNumIncrease === true) {
-        diceNum += 3;
-    }
-}
+// // Dice Roll function
+// function rollDice() {
+//     diceNum = Math.floor(Math.random() * (7 - 1) + 1);
+//     if (diceNumIncrease === true) {
+//         diceNum += 3;
+//     }
+// }
 
 // Function that moves player around on board
 function movePlayer(playerNum, swap) {
@@ -110,7 +119,7 @@ function movePlayer(playerNum, swap) {
         currentSpaceEl.append(player2.charModel);
     }
     else {
-        for (i = 0; i < diceNum; i++) {
+        for (i = 0; i < dice.number; i++) {
             // player movement
             if (playerNum.position === 0 || (playerNum.position % 7 === 1) && (playerNum.position === 1)) {
                 playerNum.position += 1;
@@ -238,10 +247,10 @@ function updatePoints(playerNum) {
 /*INCLUDES setTimeout function*/
 function gameStart(playerNum) {
     gameMessage.textContent = `Player ${playerNum.number} is rolling the dice`;
-    rollDice();
+    dice.roll();
     // Delay displaying message
     setTimeout(function() {
-        gameMessage.textContent = `Player ${playerNum.number} rolled a ${diceNum}`;
+        gameMessage.textContent = `Player ${playerNum.number} rolled a ${dice.number}`;
         setTimeout(function() {
             movePlayer(playerNum, false);
             setTimeout(function() {
@@ -409,7 +418,7 @@ function starSpaceGenerate() {
 function testerMode(diceNumMode = false, points = 0, stars = 0) {
     player1.points = points;
     player1.stars = stars;
-    diceNumIncrease = diceNumMode;
+    dice.increaseNum = diceNumMode;
 }
 
 // Event listeners
@@ -420,7 +429,7 @@ document.querySelector("body").addEventListener("click", function(e) {
     if (e.target.classList.contains('player-dice-turn')) {
         // preventing player from abusing dice functionality
         playerOrder();
-        diceBlockEl.forEach(object => {
+        dice.blockEl.forEach(object => {
             object.classList.remove('player-dice-turn');
         });
         startGameEl.classList.remove('start');
