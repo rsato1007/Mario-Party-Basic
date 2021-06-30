@@ -238,9 +238,9 @@ header {
 
 @media only screen and (max-width: 1000px) {
     .welcome-page {
-        height: 95%;
+        height: 97%;
         width: 90%;
-        font-size: 2.5em;
+        font-size: 2.2em;
         margin-left: 0.25em;
         margin-right: 0.25em;
     }
