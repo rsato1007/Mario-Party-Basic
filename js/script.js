@@ -117,6 +117,7 @@ const player1 = {
     stars: 0,
     position: 0,
     charModel: document.createElement('span'),
+    // code that generates character models
     char() {
         if (maxWidth1000.matches) {
             this.charModel.style.height = "28px";
@@ -135,7 +136,7 @@ const player1 = {
             this.charModel.classList.add = "pEl";
         }
     },
-}
+};
 
 const player2 = {
     number: 2,
@@ -165,89 +166,65 @@ const player2 = {
     playerTurn() {
 
     },
-}
+};
 
-// function that updates points
-function updatePoints(playerNum) {
-    if (playerMovement.currentSpaceEl.classList.contains('blue-space')) {
-        gameMessage.textContent = `Player ${playerNum.number} got 3 points!`;
-        time = 1000;
-        for (let i = 1; i < 4; i++) {
+// points objects that holds all points functions and properties
+points = {
+    messageAndDisplay: function(playerNum, text, points, result, time, timeIncrease) {
+        gameMessage.textContent = `Player ${playerNum.number} ${text} ${points} points!`;
+        for (let i = 0; i < points; i++) {
             setTimeout(function() {
-                playerNum.points += 1; 
-                pointsEl = document.querySelector(`#player-${playerNum.number}`);
-                pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
-                ${playerNum.stars} stars`
-            }, time);
-            time += 500;
-        }
-    }
-    else if (playerMovement.currentSpaceEl.classList.contains('red-space')) {
-        gameMessage.textContent = `Player ${playerNum.number} lost 3 points!`;
-        time = 1000;
-        for (let i = 1; i < 4; i++) {
-            setTimeout(function() {
-                playerNum.points -= 1; 
-                if (playerNum.points < 0) {
-                    playerNum.points = 0;
-                }
-                pointsEl = document.querySelector(`#player-${playerNum.number}`);
-                pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
-                ${playerNum.stars} stars`
-            }, time);
-            time += 500;
-        }
-    }
-    else if (playerMovement.currentSpaceEl.classList.contains('green-space')) {
-        const eventChoiceNum = Math.floor(Math.random() * (60 - 1 + 1) + 1);
-        // 10 Coins
-        if(eventChoiceNum >= 1 && eventChoiceNum <= 20) {
-            gameMessage.textContent = `Player ${playerNum.number} gets 10 points!`;
-            time = 100;
-            for (let i = 1; i < 11; i++) {
-                setTimeout(function() {
+                if (result === "add"){
                     playerNum.points += 1; 
-                    pointsEl = document.querySelector(`#player-${playerNum.number}`);
-                    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
-                    ${playerNum.stars} stars`
-                }, time);
-                time += 100;
-            }
-        }
-        // Minus 10 Coins
-        else if(eventChoiceNum > 20 && eventChoiceNum <= 40) {
-            gameMessage.textContent = `Player ${playerNum.number} loses 10 points!`;
-            time = 100;
-            for (let i = 1; i < 11; i++) {
-                setTimeout(function() {
+                }
+                else if (result === "remove") {
                     playerNum.points -= 1; 
                     if (playerNum.points < 0) {
                         playerNum.points = 0;
                     }
-                    pointsEl = document.querySelector(`#player-${playerNum.number}`);
-                    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
-                    ${playerNum.stars} stars`
-                }, time);
-                time += 100;
+                }
+                pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points, ${playerNum.stars} stars`
+            }, time);
+            time += timeIncrease;
+        };
+    },
+    update: function(playerNum) {    
+        if (playerMovement.currentSpaceEl.classList.contains('blue-space')) {
+            points.messageAndDisplay(playerNum, `got`, 3, "add", 1000, 500);
+        }
+        else if (playerMovement.currentSpaceEl.classList.contains('red-space')) {
+            points.messageAndDisplay(playerNum, `lost`, 3, "remove", 1000, 500);
+        }
+        else if (playerMovement.currentSpaceEl.classList.contains('green-space')) {
+            const eventChoiceNum = Math.floor(Math.random() * (60 - 1 + 1) + 1);
+            // 10 Coins
+            if (eventChoiceNum >= 1 && eventChoiceNum <= 20) {
+                points.messageAndDisplay(playerNum, `got`, 10, "add", 100, 100);
+            }
+            // Minus 10 Coins
+            else if(eventChoiceNum > 20 && eventChoiceNum <= 40) {
+                points.messageAndDisplay(playerNum, `lost`, 10, "remove", 100, 100);
+            }
+            // Swap places
+            else if(eventChoiceNum > 40) {
+                const p1Position = player1.position;
+                const p2Position = player2.position;
+                player1.position = p2Position;
+                player2.position = p1Position;
+                diceNum = 1;
+                gameMessage.textContent = `The players are swapping places!`;
+                setTimeout(function() {
+                    playerMovement.moveModel(playerNum, true);
+                }, 1500);
             }
         }
-        // Swap places
-        else if(eventChoiceNum > 40) {
-            const p1Position = player1.position;
-            const p2Position = player2.position;
-            player1.position = p2Position;
-            player2.position = p1Position;
-            diceNum = 1;
-            gameMessage.textContent = `The players are swapping places!`;
-            setTimeout(function() {
-                playerMovement.moveModel(playerNum, true);
-            }, 1500)
-        }
-    }
-    pointsEl = document.querySelector(`#player-${playerNum.number}`);
-    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
-    ${playerNum.stars} stars`
-}
+        pointsEl = document.querySelector(`#player-${playerNum.number}`);
+        pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points, ${playerNum.stars} stars`;
+    },
+};
+
+// star object that holds all star functions and properties
 
 // Game start function
 /*INCLUDES setTimeout function*/
@@ -260,7 +237,7 @@ function gameStart(playerNum) {
         setTimeout(function() {
             playerMovement.moveModel(playerNum, false);
             setTimeout(function() {
-                updatePoints(playerNum);
+                points.update(playerNum);
             }, 2500);
         }, 3000);
     }, 3000);
@@ -331,8 +308,7 @@ function playerOnStarSpace(playerNum) {
                         setTimeout(function() {
                             playerNum.points -= 1; 
                             pointsEl = document.querySelector(`#player-${playerNum.number}`);
-                            pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
-                            ${playerNum.stars} stars`
+                            pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points, ${playerNum.stars} stars`
                         }, timeoutTime);
                         timeoutTime += 50;
                     }
