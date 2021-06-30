@@ -3,21 +3,26 @@ let startEl = document.querySelector("#start");
 let startGameEl = document.getElementById("game-start"); 
 let gameMessage = document.getElementById(`game-message`);
 let diceBlockEl = document.querySelectorAll('.player-dice-turn');
+let pointsEl;
 let currentSpaceEl;
 let diceNum;
 let movesNum;
+let starSpaceEl;
+let starSpacePosition;
+let diceNumIncrease;
 
 // Creating splash screen:
 let welcomeEl = document.querySelector("#welcome");
 let backgroundEl = document.querySelector(".hidden-background");
 
 // Incorporating responsive design:
-const maxWidth1000 = window.matchMedia("(max-width: 1000px");
+const maxWidth1000 = window.matchMedia("(max-width: 1000px)");
 
 // Player objects
 const player1 = {
     number: 1,
     points: 0,
+    stars: 0,
     position: 0,
     charModel: document.createElement('span'),
     char() {
@@ -43,6 +48,7 @@ const player1 = {
 const player2 = {
     number: 2,
     points: 0,
+    stars: 0,
     position: 0,
     charModel: document.createElement('span'),
     // creates character on board
@@ -72,6 +78,9 @@ const player2 = {
 // Dice Roll function
 function rollDice() {
     diceNum = Math.floor(Math.random() * (7 - 1) + 1);
+    if (diceNumIncrease === true) {
+        diceNum = diceNum * 2;
+    }
 }
 
 // Function that moves player around on board
@@ -86,6 +95,7 @@ function movePlayer(playerNum, swap) {
     }
     else {
         for (i = 0; i < diceNum; i++) {
+            // player movement
             if (playerNum.position === 0 || (playerNum.position % 7 === 1) && (playerNum.position === 1)) {
                 playerNum.position += 1;
             }
@@ -121,6 +131,10 @@ function movePlayer(playerNum, swap) {
             else {
                 playerNum.position += 1;
             }
+            // checking if space is star space
+            if (playerNum.position === starSpacePosition) {
+                playerOnStarSpace(playerNum);
+            }
             playerNum.char();
             currentSpaceEl = document.getElementById(`square${playerNum.position}`);
             currentSpaceEl.append(playerNum.charModel);
@@ -136,8 +150,9 @@ function updatePoints(playerNum) {
         for (let i = 1; i < 4; i++) {
             setTimeout(function() {
                 playerNum.points += 1; 
-                let pointsEl = document.querySelector(`#player-${playerNum.number}`);
-                pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
+                pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+                ${playerNum.stars} stars`
             }, time);
             time += 500;
         }
@@ -151,8 +166,9 @@ function updatePoints(playerNum) {
                 if (playerNum.points < 0) {
                     playerNum.points = 0;
                 }
-                let pointsEl = document.querySelector(`#player-${playerNum.number}`);
-                pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
+                pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+                ${playerNum.stars} stars`
             }, time);
             time += 500;
         }
@@ -162,30 +178,32 @@ function updatePoints(playerNum) {
         // 10 Coins
         if(eventChoiceNum >= 1 && eventChoiceNum <= 20) {
             gameMessage.textContent = `Player ${playerNum.number} gets 10 points!`;
-            time = 1000;
+            time = 100;
             for (let i = 1; i < 11; i++) {
                 setTimeout(function() {
                     playerNum.points += 1; 
-                    let pointsEl = document.querySelector(`#player-${playerNum.number}`);
-                    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
+                    pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+                    ${playerNum.stars} stars`
                 }, time);
-                time += 500;
+                time += 100;
             }
         }
         // Minus 10 Coins
         else if(eventChoiceNum > 20 && eventChoiceNum <= 40) {
             gameMessage.textContent = `Player ${playerNum.number} loses 10 points!`;
-            time = 1000;
+            time = 100;
             for (let i = 1; i < 11; i++) {
                 setTimeout(function() {
                     playerNum.points -= 1; 
                     if (playerNum.points < 0) {
                         playerNum.points = 0;
                     }
-                    let pointsEl = document.querySelector(`#player-${playerNum.number}`);
-                    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
+                    pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+                    ${playerNum.stars} stars`
                 }, time);
-                time += 500;
+                time += 100;
             }
         }
         // Swap places
@@ -201,11 +219,13 @@ function updatePoints(playerNum) {
             }, 1500)
         }
     }
-    let pointsEl = document.querySelector(`#player-${playerNum.number}`);
-    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points`;
+    pointsEl = document.querySelector(`#player-${playerNum.number}`);
+    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+    ${playerNum.stars} stars`
 }
 
 // Game start function
+/*INCLUDES setTimeout function*/
 function gameStart(playerNum) {
     gameMessage.textContent = `Player ${playerNum.number} is rolling the dice`;
     rollDice();
@@ -214,7 +234,9 @@ function gameStart(playerNum) {
         gameMessage.textContent = `Player ${playerNum.number} rolled a ${diceNum}`;
         setTimeout(function() {
             movePlayer(playerNum, false);
-            updatePoints(playerNum);
+            setTimeout(function() {
+                updatePoints(playerNum);
+            }, 2500);
         }, 3000);
     }, 3000);
 }
@@ -222,7 +244,7 @@ function gameStart(playerNum) {
 // This is the order in which the players play the game
 function playerOrder() {
     // game start runs for 10 seconds!
-    const time = 10000
+    const time = 15000
     gameStart(player1);
     setTimeout(function() {
         gameStart(player2);
@@ -234,37 +256,132 @@ function playerOrder() {
         });
         startGameEl.classList.add('start');
         gameState();
-    }, time * 1.8);
+    }, time * 1.7);
 }
 
 function resetGame() {
     player1.points = 0;
     player2.points = 0;
+    player1.stars = 0;
+    player2.stars = 0;
     player1.position = 0;
     player2.position = 0;
     player1.charModel.remove();
     player2.charModel.remove();
     // Update screen
-    let pointsEl = document.querySelector(`#player-1`);
+    pointsEl = document.querySelector(`#player-1`);
     pointsEl.textContent = `Player 1: ${player1.points} points`;
     pointsEl = document.querySelector(`#player-2`);
     pointsEl.textContent = `Player 2: ${player2.points} points`;
 }
 
 function gameState() {
-    if (player1.points >= 20) {
+    if (player1.stars >= 2) {
         gameMessage.textContent ="You Win!";
         resetGame();
     }
-    else if (player2.points >= 20) {
+    else if (player2.stars >= 2) {
         gameMessage.textContent ="You Lose!";
         resetGame();
     } else {
         setTimeout(function() {
             gameMessage.textContent = `It's your turn to roll the dice`;
-        }, 2000)
+        }, 2000);
     }
 }
+// Function for star spaces
+function playerOnStarSpace(playerNum) {
+    timeoutTime = 50;
+    // Looks for whether this is the computer or player
+    if (playerNum.number === 1) {
+        // Has enough points
+        if (playerNum.points >= 20) {
+            let option = window.prompt("Would you like to buy a star? Y or N?");
+            if (option === null) {
+                option = window.prompt("Hitting cancel is treated as no, are you sure?");
+                if (option === "y" || option === "Y") {
+                    for (let i = 1; i < 21; i++) {
+                        setTimeout(function() {
+                            playerNum.points -= 1; 
+                            pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                            pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+                            ${playerNum.stars} stars`
+                        }, timeoutTime);
+                        timeoutTime += 50;
+                    }
+                    gameMessage.textContent = `Player ${playerNum.number} got a star!`;
+                    playerNum.stars += 1;
+                    pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+                    ${playerNum.stars} stars`
+                }
+                else if(option === "n" || option === "N") {
+                    gameMessage.textContent = `Player ${playerNum.number}..... declined a star...`;
+                }
+            }
+            else if (option === "y" || option === "Y") {
+                for (let i = 1; i < 21; i++) {
+                    setTimeout(function() {
+                        playerNum.points -= 1; 
+                        pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                        pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+                        ${playerNum.stars} stars`;
+                    }, timeoutTime);
+                    timeoutTime += 50;
+                }
+                gameMessage.textContent = `Player ${playerNum.number} got a star!`;
+                playerNum.stars += 1;
+                pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+                ${playerNum.stars} stars`;
+            }
+            else if(option === "n" || option === "N") {
+                gameMessage.textContent = `Player ${playerNum.number}..... declined a star...`;
+            }
+            else {
+            }
+        }
+        // Not enough points
+        else if (playerNum.points < 20) {
+            gameMessage.textContent = `Not enough points for a star!`;
+        }
+    }
+    else if (playerNum.number === 2) {
+        if (playerNum.points >= 20) {
+            for (let i = 1; i < 21; i++) {
+                setTimeout(function() {
+                    playerNum.points -= 1; 
+                    pointsEl = document.querySelector(`#player-${playerNum.number}`);
+                    pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+                    ${playerNum.stars} stars`
+                }, timeoutTime);
+                timeoutTime += 50;
+            }
+            gameMessage.textContent = `Player ${playerNum.number} got a star!`;
+            playerNum.stars += 1;
+            pointsEl = document.querySelector(`#player-${playerNum.number}`);
+            pointsEl.textContent = `Player ${playerNum.number}: ${playerNum.points} points,
+            ${playerNum.stars} stars`
+        }
+        else if (playerNum.points < 20) {
+            gameMessage.textContent = `Not enough points for a star!`;
+        }
+    }
+}
+
+// Generates star space information
+function starSpaceGenerate() {
+    // eventually provide array that randomly chooses between the stars or something like.
+    starSpaceEl = document.getElementById("square8");
+    starSpacePosition = 8;
+}
+
+// Developer mode for testing
+function developerMode(diceNumIncrease = false) {
+    player1.points = 100;
+    diceNumIncrease = true
+}
+
 // Event listeners
 document.querySelector("body").addEventListener("click", function(e) {
     e.preventDefault();
@@ -293,3 +410,5 @@ document.querySelector("body").addEventListener("click", function(e) {
         backgroundEl.classList.remove("hidden-background");
     }
 });
+
+starSpaceGenerate();

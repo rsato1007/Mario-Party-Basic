@@ -177,6 +177,15 @@ header {
     color: white;
 }
 
+.star-space {
+    background-color: #d4af37;
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: 2px solid #e9c54d;
+}
+
 #welcome-page-header {
     text-align: center;
     border: 1px solid black;
@@ -290,6 +299,13 @@ header {
         font-size: 2em;
     }
 
+    .star-space {
+        width: 45px;
+        height: 45px;
+        line-height: 45px;
+        font-size: 2em;
+    }
+
     #player-1 {
         font-size: 1.5em;
     }
@@ -314,45 +330,3 @@ header {
         border: 1.8px solid black;
     }
 }
-/* 
-.star-space {
-    margin: 50px 0;
-    position: relative;
-    display: block;
-    color: red;
-    width: 0px;
-    height: 0px;
-    border-right: 100px solid transparent;
-    border-bottom: 70px solid red;
-    border-left: 100px solid transparent;
-    transform: rotate(35deg);
-}
-
-.star-space:before {
-    border-bottom: 40px solid red;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    position: relative;
-    height: 0;
-    width: 0;
-    top: -45px;
-    left: -65px;
-    display: block;
-    content: '';
-    transform: rotate(-35deg);
-}
-
-.star-space:after {
-    position: absolute;
-    display: block;
-    color: red;
-    top: 3px;
-    left: -105px;
-    width: 0px;
-    height: 0px;
-    border-right: 100px solid transparent;
-    border-bottom: 70px solid red;
-    border-left: 100px solid transparent;
-    transform: rotate(-70deg);
-    content: '';
-} */
