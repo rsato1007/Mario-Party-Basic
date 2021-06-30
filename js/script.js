@@ -100,14 +100,6 @@ function branchWindowOption(playerNum) {
     return;
 }
 
-// // Dice Roll function
-// function rollDice() {
-//     diceNum = Math.floor(Math.random() * (7 - 1) + 1);
-//     if (diceNumIncrease === true) {
-//         diceNum += 3;
-//     }
-// }
-
 // Function that moves player around on board
 function movePlayer(playerNum, swap) {
     if (swap === true) {
