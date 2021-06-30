@@ -262,7 +262,7 @@ function playerOrder() {
     }, time);
     // Gives player ability to roll dice again
     setTimeout(function() {
-        diceBlockEl.forEach(object => {
+        dice.blockEl.forEach(object => {
             object.classList.add('player-dice-turn');
         });
         startGameEl.classList.add('start');
